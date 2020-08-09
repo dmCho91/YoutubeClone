@@ -38,6 +38,19 @@ router.post('/uploadfiles', (req, res) => {
     })
 })
 
+router.get('/getVideos', (req, res) => {
+
+    // 비디오를 DB에서 가져와서 클라이언트에 보낸다.
+    Video.find()
+        .populate('writer') // pupulate하지 않으면 writer의 id만 가져옴
+        .exec((err, videos) =>{
+            if(err) return res.status(400).send(err)
+            res.status(200).json({ success: true, videos})
+        })
+    
+})
+
+
 router.post('/thumbnail', (req, res) =>{
     // 썸네일 생성하고 비디오 러닝타임 가져오기
 
@@ -88,5 +101,7 @@ router.post('/uploadVideo', (req, res) => {
         res.status(200).json({ success: true})
     })
 })
+
+
 
 module.exports = router;
