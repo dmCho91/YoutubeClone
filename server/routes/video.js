@@ -46,9 +46,20 @@ router.get('/getVideos', (req, res) => {
         .exec((err, videos) =>{
             if(err) return res.status(400).send(err)
             res.status(200).json({ success: true, videos})
-        })
-    
+        })  
 })
+
+router.post('/getVideoDetail', (req, res) => {
+
+    Video.findOne({"_id": req.body.videoId})
+        .populate('writer')
+        .exec((err, videoDetail) => {
+            if(err) return res.status(400).send(err)
+            return res.status(200).json({ success: true, videoDetail})
+        })
+})
+
+
 
 
 router.post('/thumbnail', (req, res) =>{
@@ -83,7 +94,7 @@ router.post('/thumbnail', (req, res) =>{
         })
         .screenshot({
             // will take screenshots at 20% 40% 60% and 80% of the video
-            count: 3,
+            count: 1,
             folder: 'uploads/thumbnails',
             size: '320x240',
             // %b : input basename (filename w/o extension)
