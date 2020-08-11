@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
 import { useSelector } from 'react-redux'
+import SingleComment from './SingleComment'
+import { Button } from 'antd'
+import { set } from 'mongoose'
 
 function Comment(props) {
     const videoId = props.postId
@@ -26,6 +29,8 @@ function Comment(props) {
             .then(response => {
                 if(response.data.success){
                     console.log(response.data.result)
+                    setCommentValue("")
+                    props.refreshFunc(response.data.result)
                 }else{
                     alert(' 코멘트를 저장하지 못했습니다.')
                 }
@@ -38,7 +43,12 @@ function Comment(props) {
             <p> Replies</p>
             <hr />
 
-            {/* Comment Lists */}
+            {/* Comment Lists */} 
+            {props.commentsList && props.commentsList.map((comment, index) => (
+                (!comment.responseTo &&
+                    <SingleComment refreshFunc={props.refreshFunc} comment={comment} postId={videoId}/>
+                )
+            ))} 
 
             {/* Root Comment Form */}
 
@@ -51,7 +61,7 @@ function Comment(props) {
 
                 />
                 <br />
-                <button style={{width:'20%', height:'52px'}} onClick={onSubmit} >Submit</button>
+                <Button style={{width:'20%', height:'52px'}} onClick={onSubmit} >Submit</Button>
             </form>
         </div>
     )
