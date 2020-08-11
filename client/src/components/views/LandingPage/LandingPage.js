@@ -12,7 +12,7 @@ function LandingPage() {
 
     // DOM이 로딩되자마자 실행
     useEffect(() => {
-        Axios.get('api/video/getVideos')
+        Axios.get('/api/video/getVideos')
             .then(response => {
                 if(response.data.success){
                     setVideo(response.data.videos)
