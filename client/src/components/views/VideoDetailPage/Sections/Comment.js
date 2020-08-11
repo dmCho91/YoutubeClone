@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { useSelector } from 'react-redux'
 import SingleComment from './SingleComment'
 import { Button } from 'antd'
-import { set } from 'mongoose'
+import ReplyComment from './ReplyComment'
 
 function Comment(props) {
     const videoId = props.postId
@@ -44,9 +44,12 @@ function Comment(props) {
             <hr />
 
             {/* Comment Lists */} 
-            {props.commentsList && props.commentsList.map((comment, index) => (
+            {props.commentLists && props.commentLists.map((comment, index) => (
                 (!comment.responseTo &&
-                    <SingleComment refreshFunc={props.refreshFunc} comment={comment} postId={videoId}/>
+                    <React.Fragment>
+                        <SingleComment refreshFunc={props.refreshFunc} comment={comment} postId={videoId}/>
+                        <ReplyComment refreshFunc={props.refreshFunc} parentCommentId={comment._id} commentLists={props.commentLists} postId={videoId}/>
+                    </React.Fragment>
                 )
             ))} 
 
