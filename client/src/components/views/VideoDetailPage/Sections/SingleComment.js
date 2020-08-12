@@ -62,7 +62,8 @@ function SingleComment(props) {
                 content={
                     <p> 
                         {props.comment.content}
-                    </p>}
+                    </p>
+                }
             />
 
             { OpenReply && 
