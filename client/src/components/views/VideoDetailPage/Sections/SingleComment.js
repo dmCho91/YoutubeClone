@@ -29,12 +29,12 @@ function SingleComment(props) {
             responseTo : props.comment._id
         }
 
+        console.log('single: ', variables.postId)
         Axios.post('/api/comment/saveComment', variables)
             .then(response => {
                 if(response.data.success){
-                    console.log(response.data.result)
                     setCommentValue("")
-                    setOpenReply(false)
+                    setOpenReply(!OpenReply)
                     props.refreshFunc(response.data.result)
                 }else{
                     alert(' 코멘트를 저장하지 못했습니다.')
@@ -54,13 +54,18 @@ function SingleComment(props) {
             <Comment 
                 actions={actions}
                 author={props.comment.writer.name}
-                avatar={<Avatar src={props.comment.writer.image} alt/>}
-                content={<p> {props.comment.content}</p>}
+                avatar={
+                    <Avatar src={props.comment.writer.image} alt="image"/>
+                }
+                content={
+                    <p> 
+                        {props.comment.content}
+                    </p>}
             />
 
             { OpenReply && 
                 <form style={{display:'flex'}} onSubmit={onSubmit}>
-                    <textarea 
+                    <TextArea 
                         style={{width:'100%', borderRadius:'5px'}}
                         onChange = {onHandleChange}
                         value = {CommentValue}

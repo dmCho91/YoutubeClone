@@ -16,7 +16,7 @@ function ReplyComment(props) {
         })
 
         setChildCommentNumber(commentNumber)
-    }, [props.commentLists]) // commentLists가 바뀔때마다 실행
+    }, [props.commentLists, props.parentCommentId]) // [] 안이 바뀔때마다 실행
 
     const renderReplyComment = (parentCommentId) => 
         props.commentLists.map((comment, index) => (
@@ -24,8 +24,8 @@ function ReplyComment(props) {
             <React.Fragment>
                 {comment.responseTo === parentCommentId &&
                     <div style={{width:'80%', marginLeft:'40px'}}>
-                        <SingleComment refreshFunc={props.refreshFunc} comment={comment} postId={props.videoId}/>
-                        <ReplyComment refreshFunc={props.refreshFunc} commentLists={props.commentLists} postId={props.videoId} parentCommentId={comment._id}/>
+                        <SingleComment refreshFunc={props.refreshFunc} comment={comment} postId={props.postId}/>
+                        <ReplyComment refreshFunc={props.refreshFunc} commentLists={props.commentLists} postId={props.postId} parentCommentId={comment._id}/>
                     </div>
                 }
             </React.Fragment>
