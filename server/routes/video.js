@@ -139,6 +139,16 @@ router.post('/getSubscriptionVideos', (req, res) => {
 
 })
 
+router.post('/upViews', (req, res) => {
+    Video.findOne({"_id": req.body.videoId}, (err, doc)=>{
+        if(err) return res.json({success: false})
 
+        doc.views++
+        doc.save((err, result) => {
+            if(err) return res.json({success:false})
+        })
+        res.status(200).json({success:true, views:doc.views})
+    })
+})
 
 module.exports = router;

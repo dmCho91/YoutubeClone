@@ -6,6 +6,7 @@ import Subscribe from './Sections/Subscribe'
 import Comment from './Sections/Comment'
 import LikeDislikes from './Sections/LikeDislikes'
 
+
 function VideoDetailPage(props) {
 
     const videoId = props.match.params.videoId
@@ -13,6 +14,9 @@ function VideoDetailPage(props) {
 
     const [VideoDetail, setVideoDetail] = useState([])
     const [Comments, setComments] = useState([])
+
+    const [Views, setViews] = useState(0)
+
 
     useEffect(() => {
         
@@ -32,6 +36,16 @@ function VideoDetailPage(props) {
                     setComments(response.data.comments)
                 }else{
                     alert('코멘트 정보를 가져오는 것을 실패했습니다.')
+                }
+            })
+
+        Axios.post('/api/video/upViews', variable)
+            .then(response => {
+                if(response.data.success){
+                    setViews(response.data.views)
+                    
+                }else{
+                    alert('조회수 정보를 가져오는 것을 실패했습니다.')
                 }
             })
 
@@ -57,11 +71,13 @@ function VideoDetailPage(props) {
 
                         <List.Item 
                             actions ={[<LikeDislikes video userId={localStorage.getItem('userId')} videoId={videoId}/> , subscribeButton ]}
+                            extra = {`${Views} views`}
                         >
                             <List.Item.Meta
                                 avatar = { <Avatar src={VideoDetail.writer.image} />}
                                 title = {VideoDetail.title}
                                 description = {VideoDetail.description}
+                                
                             />
                         </List.Item>
 
